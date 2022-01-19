@@ -4,9 +4,10 @@ import (
 	"time"
 
 	"github.com/francispinheiro/database"
+	"github.com/francispinheiro/pkg/utils"
 
 	"github.com/francispinheiro/go_pgx/models"
-	"github.com/francispinheiro/go_pgx/utils"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -131,7 +132,7 @@ func CreateBook(c *fiber.Ctx) error {
 
 	// Checking, if now time greather than expiration from JWT.
 	if now > expires {
-		// Return estatus 401 and  unauthorized error message.
+		// Return status 401 and unauthorized error message.
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": true,
 			"msg":   "unauthorized, check expiration time of your token",
@@ -162,6 +163,11 @@ func CreateBook(c *fiber.Ctx) error {
 
 	// Create a new validator for a Book model.
 	validate := utils.NewValidator()
+
+	// Set initialized default data for book:
+	book.ID = uuid.New()
+	book.CreatedAt = time.Now()
+	book.BookStatus = 1 // 0 == draft, 1 == active
 
 	// Validate book fields.
 	if err := validate.Struct(book); err != nil {
@@ -302,7 +308,7 @@ func UpdateBook(c *fiber.Ctx) error {
 // @Router /v1/book [delete]
 func DeleteBook(c *fiber.Ctx) error {
 	// Get now time.
-	now := time.Now()
+	now := time.Now().Unix()
 
 	// Get claims from JWT.
 	claims, err := utils.ExtractTokenMetadata(c)

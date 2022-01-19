@@ -14,13 +14,13 @@ type Book struct {
 	ID         uuid.UUID `db:"id" json:"id" validate:"required,uuid"`
 	CreatedAt  time.Time `db:"created_at" json:"created_at" `
 	UpdatedAt  time.Time `db:"updated_at" json:"updated_at" `
-	UserID     uuid.UUID `db:"user_id" json:"user_id" validate:"required,uuid"`
 	Title      string    `db:"title" json:"title" validate:"required,lte=255"`
-	Author     string    `db:"au=10thor" json:"author" validate:"required,lte=255"`
+	Author     string    `db:"author" json:"author" validate:"required,lte=255"`
 	BookStatus int       `db:"book_status" json:"book_status" validate:"required,len=1"`
 	BookAttrs  BookAttrs `db:"book_attrs" json:"book_attrs" validate:"required,dive"`
 }
 
+//UserID     uuid.UUID `db:"user_id" json:"user_id" validate:"required,uuid"`
 // BookAttrs struct to describe book attributes
 type BookAttrs struct {
 	Picture     string `json:"picture"`

@@ -1,8 +1,8 @@
 package controllers
 
 import (
+	"github.com/francispinheiro/pkg/utils"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/utils"
 )
 
 func GetNewAccessToken(c *fiber.Ctx) error {
